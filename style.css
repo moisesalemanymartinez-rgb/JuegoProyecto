@@ -1,0 +1,640 @@
+:root {
+    --primary: #FFCC00;
+    /* Vibrant Yellow */
+    --secondary: #FF0033;
+    /* Arcade Red */
+    --bg: #111;
+    /* Dark Black */
+    --text: #FFF;
+    --font: 'VT323', monospace;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #222;
+    font-family: var(--font);
+    overflow: hidden;
+
+    /* Console Frame */
+    #console-frame {
+        background: #222;
+        padding: 40px;
+        border-radius: 40px;
+        box-shadow:
+            inset 0 0 20px #000,
+            0 20px 50px rgba(0, 0, 0, 0.8),
+            0 0 0 10px #333;
+        /* Outer casing */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Power Light */
+    #console-frame::after {
+        content: 'POWER';
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #555;
+        font-size: 10px;
+        font-family: sans-serif;
+        letter-spacing: 2px;
+    }
+
+    #console-frame::before {
+        content: '';
+        position: absolute;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 8px;
+        background: #f00;
+        border-radius: 50%;
+        box-shadow: 0 0 5px #f00;
+    }
+
+    #console-screen-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        /* Slight curve to screen */
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 1);
+        /* Deep bezel shadow */
+    }
+
+    #console-container {
+        width: 400px;
+        height: 600px;
+        background-color: var(--bg);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        /* Retro effects inside here now */
+        text-shadow: 2px 0 rgba(255, 0, 0, 0.5), -2px 0 rgba(0, 0, 255, 0.5);
+        /* RGB Shift */
+    }
+
+    /* Scanline effect scoped to console wrapper */
+    #console-screen-wrapper::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        background-size: 100% 3px, 3px 100%;
+        pointer-events: none;
+        z-index: 100;
+        animation: flicker 0.15s infinite;
+    }
+
+    .screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: var(--primary);
+        text-align: center;
+    }
+
+    .screen.active {
+        display: flex;
+    }
+
+    h1 {
+        font-size: 4rem;
+        margin: 0;
+        line-height: 1;
+        text-shadow: 4px 4px var(--secondary);
+    }
+
+    h2 {
+        font-size: 3rem;
+        margin: 10px 0;
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+
+    button.btn-retro {
+        background: var(--secondary);
+        color: var(--text);
+        border: 2px solid var(--text);
+        padding: 10px 30px;
+        font-size: 2rem;
+        font-family: var(--font);
+        cursor: pointer;
+        text-transform: uppercase;
+        box-shadow: 4px 4px 0 var(--text);
+        transition: transform 0.1s;
+    }
+
+    button.btn-retro:active {
+        transform: translate(4px, 4px);
+        box-shadow: none;
+    }
+
+    /* HUD */
+    #hud {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background: #000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        box-sizing: border-box;
+        border-top: 2px solid var(--primary);
+        z-index: 50;
+    }
+
+    .hud-item {
+        font-size: 1.5rem;
+        color: var(--text);
+    }
+
+    .lives {
+        color: var(--secondary);
+    }
+
+    /* Timer Bar */
+    #timer-bar-container {
+        position: absolute;
+        bottom: 60px;
+        /* Above HUD */
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: #333;
+        z-index: 40;
+    }
+
+    #timer-bar {
+        height: 100%;
+        background: var(--primary);
+        width: 100%;
+        transform-origin: left;
+    }
+
+    /* Microgame Area */
+    #game-area {
+        position: relative;
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Game Elements */
+    .moving-target {
+        width: 60px;
+        height: 60px;
+        background: var(--secondary);
+        border: 2px solid #fff;
+        border-radius: 50%;
+        position: absolute;
+        cursor: pointer;
+        box-shadow: 0 0 10px var(--secondary);
+    }
+
+    .wire-container {
+        display: flex;
+        gap: 20px;
+    }
+
+    .wire {
+        width: 20px;
+        height: 200px;
+        cursor: pointer;
+        border: 2px solid #fff;
+        position: relative;
+    }
+
+    .wire::after {
+        content: '';
+        position: absolute;
+        left: -10px;
+        right: -10px;
+        height: 10px;
+        background: #555;
+        top: 0;
+    }
+
+    .wire::before {
+        content: '';
+        position: absolute;
+        left: -10px;
+        right: -10px;
+        height: 10px;
+        background: #555;
+        bottom: 0;
+    }
+
+    .math-options {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .math-btn {
+        background: var(--primary);
+        color: #000;
+        padding: 15px 25px;
+        font-size: 2rem;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font);
+    }
+
+    /* Animations */
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .pulse {
+        animation: pulse 0.5s infinite;
+    }
+
+    @keyframes shake {
+        0% {
+            transform: translate(1px, 1px) rotate(0deg);
+        }
+
+        10% {
+            transform: translate(-1px, -2px) rotate(-1deg);
+        }
+
+        20% {
+            transform: translate(-3px, 0px) rotate(1deg);
+        }
+
+        30% {
+            transform: translate(3px, 2px) rotate(0deg);
+        }
+
+        40% {
+            transform: translate(1px, -1px) rotate(1deg);
+        }
+
+        50% {
+            transform: translate(-1px, 2px) rotate(-1deg);
+        }
+
+        60% {
+            transform: translate(-3px, 1px) rotate(0deg);
+        }
+
+        70% {
+            transform: translate(3px, 1px) rotate(-1deg);
+        }
+
+        80% {
+            transform: translate(-1px, -1px) rotate(1deg);
+        }
+
+        90% {
+            transform: translate(1px, 2px) rotate(0deg);
+        }
+
+        100% {
+            transform: translate(1px, -2px) rotate(-1deg);
+        }
+    }
+
+    .shake {
+        animation: shake 0.2s;
+    }
+
+    /* Faster shake for shooting */
+
+    /* Smog Hunt Specifics */
+    .smog-cloud {
+        position: absolute;
+        font-size: 80px;
+        cursor: crosshair;
+        user-select: none;
+        filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.5)) grayscale(100%) brightness(60%);
+        transition: filter 0.1s;
+    }
+
+    .smog-cloud:active {
+        filter: brightness(200%) sepia(100%) hue-rotate(-50deg);
+        /* Flash red on hit */
+    }
+
+    .muzzle-flash {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        opacity: 0.8;
+        pointer-events: none;
+        transition: opacity 0.1s;
+    }
+
+    .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #555;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .city-bg {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 150px;
+        background:
+            linear-gradient(to top, #111 0%, transparent 100%),
+            repeating-linear-gradient(90deg, #222 0, #222 20px, transparent 20px, transparent 40px) 0 100% / 100% 60px no-repeat,
+            repeating-linear-gradient(90deg, #1a1a1a 0, #1a1a1a 30px, transparent 30px, transparent 80px) 10px 100% / 100% 100px no-repeat;
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    /* Mascot Styles */
+    #main-layout {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+
+    #mascot-container {
+        position: relative;
+        width: 150px;
+        /* Smaller width */
+        height: 225px;
+        /* Smaller height (maintain ratio approx) */
+        animation: float 3s ease-in-out infinite;
+        transform: scale(0.8);
+        /* Scale down further */
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    .iceberg {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background: linear-gradient(to bottom, #fff, #cceeff);
+        border-radius: 50% 50% 10% 10%;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .penguin {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 120px;
+        background: linear-gradient(to right, #111, #333);
+        border-radius: 50% 50% 40% 40%;
+        z-index: 10;
+    }
+
+    .penguin-belly {
+        position: absolute;
+        bottom: 10px;
+        left: 15%;
+        width: 70%;
+        height: 80%;
+        background: #fff;
+        border-radius: 50% 50% 40% 40%;
+    }
+
+    .penguin-face {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+    }
+
+    .eye {
+        position: absolute;
+        top: 0;
+        width: 25px;
+        height: 25px;
+        background: #fff;
+        border-radius: 50%;
+    }
+
+    .eye.left {
+        left: 20px;
+    }
+
+    .eye.right {
+        right: 20px;
+    }
+
+    .pupil {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 8px;
+        height: 8px;
+        background: #000;
+        border-radius: 50%;
+    }
+
+    .beak {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 15px;
+        background: orange;
+        border-radius: 50% 50% 50% 10%;
+    }
+
+    .speech-bubble {
+        position: absolute;
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        color: #000;
+        padding: 15px;
+        border-radius: 20px;
+        font-size: 1.5rem;
+        width: 200px;
+        text-align: center;
+        box-shadow: 4px 4px 0 #000;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-family: var(--font);
+        z-index: 20;
+    }
+
+    .speech-bubble::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px 10px 0;
+        border-style: solid;
+    }
+
+    .speech-bubble.visible {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    /* Console Styling: Transparent Blue Vertical Handheld (Simplified) */
+    #console-frame {
+        position: relative;
+        /* Fit to screen + padding */
+        width: auto;
+        height: auto;
+        /* Transparent Blue Plastic */
+        background: linear-gradient(135deg, rgba(30, 30, 220, 0.4), rgba(10, 10, 150, 0.6));
+        backdrop-filter: blur(5px);
+        border-radius: 30px;
+        /* Glassy / Plastic Depth */
+        box-shadow:
+            inset 0 0 20px rgba(255, 255, 255, 0.2),
+            /* Inner Rim Highlight */
+            inset 0 0 50px rgba(0, 0, 100, 0.5),
+            /* Deep thickness */
+            0 20px 50px rgba(0, 0, 200, 0.3),
+            /* Outer Glow */
+            0 0 0 2px rgba(255, 255, 255, 0.1);
+        /* Edge highlight */
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Internal Structure Lines (Fake PCB/Ribs) */
+    #console-frame::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: 30px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    #console-screen-wrapper {
+        position: relative;
+        width: 600px;
+        height: 600px;
+        /* Square-ish screen for retro feel */
+        background: #000;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+        border: 10px solid rgba(0, 0, 0, 0.3);
+        /* Dark bezel inside plastic */
+        z-index: 1;
+        flex-shrink: 0;
+    }
+
+    #console-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        color: var(--text);
+        font-family: var(--font);
+        overflow: hidden;
+    }
+
+    /* RETRO CRT EFFECTS (Scoped) */
+    @keyframes flicker {
+        0% {
+            opacity: 0.1;
+        }
+
+        50% {
+            opacity: 0.15;
+        }
+
+        100% {
+            opacity: 0.1;
+        }
+    }
+
+    .crt-overlay {
+        position: absolute;
+        /* Relative to wrapper */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.4) 100%);
+        /* Vignette */
+        pointer-events: none;
+        z-index: 99;
+    }
+
+    /* Color Separation (RGB shift) on everything */
+    #main-layout {
+        text-shadow: 2px 0 rgba(255, 0, 0, 0.5), -2px 0 rgba(0, 0, 255, 0.5);
+    }
+}
