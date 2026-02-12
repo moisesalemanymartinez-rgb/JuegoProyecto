@@ -719,8 +719,203 @@ body {
         filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
     }
 
-    /* Wrong ingredient feedback */
-    .ingredient-item[data-type="bad"]:active {
-        transform: scale(1.2);
+    /* Wind Turbine Game (SDG 7) */
+    .wind-game-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wind-sky {
+        width: 100%;
+        height: 70%;
+        /* 70% of screen */
+        background: linear-gradient(to bottom, #2196F3 0%, #B3E5FC 100%);
+        /* Nicer sky */
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* REMOVED .wind-ground as valid separate container, now it's just a control overlay */
+    .wind-ground {
+        width: 100%;
+        height: 30%;
+        /* 30% of screen */
+        background: radial-gradient(circle at 50% 0%, #4CAF50, #2E7D32);
+        /* Green grass */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        /* Changed from absolute to flow naturally */
+        z-index: 20;
+        box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+
+
+    /* TURBINE */
+    .turbine-container {
+        position: absolute;
+        /* Changed from relative to absolute for placement */
+        width: 200px;
+        height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        bottom: 15%;
+        /* Default bottom alignment on "ground" line */
+        transform-origin: bottom center;
+    }
+
+    .turbine-tower {
+        width: 14px;
+        /* Slightly wider */
+        /* height: 160px; REMOVED fixed height */
+        top: 50px;
+        /* Start at hub center (38 + 12 = 50) */
+        bottom: 0;
+        /* Go to bottom */
+        height: auto;
+        background: linear-gradient(90deg, #999, #fff 40%, #ccc 60%, #777);
+        /* Metallic cylinder */
+        position: absolute;
+        /* Tapering effect */
+        clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    }
+
+    .turbine-hub {
+        width: 24px;
+        height: 24px;
+        background: radial-gradient(circle at 30% 30%, #fff, #ccc, #666);
+        /* Sphere look */
+        border-radius: 50%;
+        position: absolute;
+        top: 38px;
+        /* Adjusted for size */
+        z-index: 5;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .turbine-blades {
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        top: -50px;
+        /* Center point */
+        /* Animation handled by JS for mechanic */
+    }
+
+    .turbine-blade {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 18px;
+        height: 110px;
+        background: linear-gradient(90deg, #fff, #eee);
+        border: 1px solid #bbb;
+        /* Airfoil shape */
+        border-radius: 50% 20% 100% 0%;
+        transform-origin: 50% 0%;
+        margin-left: -9px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ENERGY METER */
+    .energy-container {
+        position: absolute;
+        top: 60px;
+        /* Lowered from 20px */
+        right: 20px;
+        width: 150px;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        font-family: inherit;
+    }
+
+    .energy-bar {
+        width: 100%;
+        height: 20px;
+        background: #333;
+        border: 2px solid #555;
+        margin-top: 5px;
+        position: relative;
+    }
+
+    .energy-fill {
+        width: 0%;
+        height: 100%;
+        background: #f44336;
+        transition: width 0.1s linear, background 0.3s;
+    }
+
+    /* CONTROLS */
+    .wind-button {
+        font-family: inherit;
+        font-size: 24px;
+        padding: 20px 40px;
+        background: #2196F3;
+        color: white;
+        border: 4px solid #1976D2;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 6px 0 #0D47A1;
+        transition: transform 0.05s, box-shadow 0.05s;
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .wind-button:active {
+        transform: translateY(6px);
+        box-shadow: 0 0 0 #0D47A1;
+    }
+
+    /* WIND PARTICLES */
+    /* WIND PARTICLES */
+    .wind-particle {
+        position: absolute;
+        left: -50px;
+        /* Start off-screen left */
+        height: 2px;
+        width: 60px;
+        /* Longer trails */
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 2px;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        animation: windBlow 1.5s linear forwards;
+        pointer-events: none;
+        z-index: 15;
+    }
+
+    @keyframes windBlow {
+        0% {
+            transform: translateX(0) translateY(0) rotate(0deg);
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(500px) translateY(20px) rotate(5deg);
+            opacity: 0;
+        }
+    }
+
+    /* Sticker Styling (Animation handled in JS) */
+    .wind-sticker {
+        position: absolute;
+        font-size: 60px;
+        pointer-events: none;
+        z-index: 100;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
     }
 }
