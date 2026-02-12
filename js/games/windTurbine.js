@@ -165,7 +165,7 @@ Microgames.windTurbine = {
 
             // Natural Decay of Wind Force
             if (globalSpeed > 0) {
-                globalSpeed *= 0.96; // Friction
+                globalSpeed *= 0.98; // Friction (Reduced from 0.96 for easier filling)
                 if (globalSpeed < 0.1) globalSpeed = 0;
             }
 
@@ -173,7 +173,7 @@ Microgames.windTurbine = {
             if (globalSpeed > 2) {
                 // More turbines spinning = more energy? 
                 // Let's just simulate rate based on speed
-                energy += (globalSpeed * 0.03);
+                energy += (globalSpeed * 0.08); // Increased from 0.03 for easier filling
                 if (energy > maxEnergy) energy = maxEnergy;
             }
 
@@ -199,7 +199,7 @@ Microgames.windTurbine = {
             if (!gameActive) return;
 
             // Add Wind Force
-            globalSpeed += 5;
+            globalSpeed += 8; // Increased from 5 for easier filling
             if (globalSpeed > 30) globalSpeed = 30; // Cap speed
 
             // Visuals
