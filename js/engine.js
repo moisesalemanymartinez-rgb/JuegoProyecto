@@ -221,7 +221,7 @@ const Game = {
             }
         }
 
-        const nextKey = 'energyBalance'; // TEMPORARY: Force energyBalance only
+        const nextKey = 'heartBeat'; // TEMPORARY: Force heartBeat only
         this.lastGameKey = nextKey;
         console.log("Selected Game (Forced):", nextKey);
 
