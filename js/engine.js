@@ -81,7 +81,6 @@ const Game = {
             return;
         }
 
-<<<<<<< HEAD
         // DYNAMIC GAME SELECTION (SHUFFLE BAG)
         const availableGames = Object.keys(window.Microgames || {});
 
@@ -100,36 +99,20 @@ const Game = {
                 const j = Math.floor(Math.random() * (i + 1));
                 [this.state.gameBag[i], this.state.gameBag[j]] = [this.state.gameBag[j], this.state.gameBag[i]];
             }
+
+            // Prevent duplicate across bag boundaries (Remote Feature Merged)
+            if (this.state.lastGameKey && this.state.gameBag[this.state.gameBag.length - 1] === this.state.lastGameKey && this.state.gameBag.length > 1) {
+                // Swap last (which is next to pop) with first
+                const lastIdx = this.state.gameBag.length - 1;
+                [this.state.gameBag[0], this.state.gameBag[lastIdx]] = [this.state.gameBag[lastIdx], this.state.gameBag[0]];
+            }
         }
 
         const nextKey = this.state.gameBag.pop();
+        this.state.lastGameKey = nextKey;
         console.log("Selected Game:", nextKey, "Remaining in Bag:", this.state.gameBag);
 
         const gameModule = window.Microgames[nextKey];
-
-=======
-        // Bag Randomization (Play all games before repeating)
-        if (!this.gameQueue || this.gameQueue.length === 0) {
-            const games = Object.keys(Microgames);
-            // Shuffle
-            for (let i = games.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [games[i], games[j]] = [games[j], games[i]];
-            }
-
-            // Prevent duplicate across bag boundaries
-            if (this.lastGameKey && games[0] === this.lastGameKey && games.length > 1) {
-                // Swap first with end to avoid repetition
-                [games[0], games[games.length - 1]] = [games[games.length - 1], games[0]];
-            }
-
-            this.gameQueue = games;
-        }
-
-        const nextKey = this.gameQueue.shift();
-        this.lastGameKey = nextKey;
-        const gameModule = Microgames[nextKey];
->>>>>>> 197a70f0576f20db128d4459a718cf399cc8112e
         this.currentGame = { key: nextKey, module: gameModule };
 
         // Transition Screen
