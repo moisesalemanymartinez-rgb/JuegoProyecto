@@ -67,7 +67,7 @@ const Game = {
 
     updateHUD() {
         this.hud.score.innerText = this.state.score;
-        this.hud.lives.innerText = '♥'.repeat(this.state.lives);
+        this.hud.lives.innerText = '♥'.repeat(Math.max(0, this.state.lives));
     },
 
     showScreen(name) {
@@ -81,11 +81,9 @@ const Game = {
             return;
         }
 
-        // RANDOM MODE: Pick any available game
-        const gameKeys = Object.keys(window.Microgames);
-        const randomKey = gameKeys[Math.floor(Math.random() * gameKeys.length)];
-        const gameModule = window.Microgames[randomKey];
-        this.currentGame = { key: randomKey, module: gameModule };
+        // ISOLATED MODE: Only Smog Hunt
+        const gameModule = Microgames.smogHunt;
+        this.currentGame = { key: 'smogHunt', module: gameModule };
 
         // Transition Screen
         document.getElementById('msg-instruction').innerText = gameModule.instruction;
@@ -108,6 +106,7 @@ const Game = {
 
         // Start Timer
         const timeAvailable = Math.max(3000, this.config.baseTime / this.state.difficulty);
+        console.log(`[Engine] Starting Round. Difficulty: ${this.state.difficulty}, Time: ${timeAvailable}ms`);
         this.startTimer(timeAvailable);
 
         // Initialize Game
@@ -162,6 +161,7 @@ const Game = {
     },
 
     onLose(isTimeout = false) {
+        console.log(`[Engine] Game Lost. IsTimeout: ${isTimeout}`);
         this.stopTimer();
         this.cleanup();
         this.state.lives--;
