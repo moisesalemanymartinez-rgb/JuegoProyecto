@@ -81,9 +81,28 @@ const Game = {
             return;
         }
 
-        // ISOLATED MODE: Only Smog Hunt
-        const gameModule = Microgames.smogHunt;
-        this.currentGame = { key: 'smogHunt', module: gameModule };
+        // Bag Randomization (Play all games before repeating)
+        if (!this.gameQueue || this.gameQueue.length === 0) {
+            const games = Object.keys(Microgames);
+            // Shuffle
+            for (let i = games.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [games[i], games[j]] = [games[j], games[i]];
+            }
+
+            // Prevent duplicate across bag boundaries
+            if (this.lastGameKey && games[0] === this.lastGameKey && games.length > 1) {
+                // Swap first with end to avoid repetition
+                [games[0], games[games.length - 1]] = [games[games.length - 1], games[0]];
+            }
+
+            this.gameQueue = games;
+        }
+
+        const nextKey = this.gameQueue.shift();
+        this.lastGameKey = nextKey;
+        const gameModule = Microgames[nextKey];
+        this.currentGame = { key: nextKey, module: gameModule };
 
         // Transition Screen
         document.getElementById('msg-instruction').innerText = gameModule.instruction;
