@@ -67,7 +67,7 @@ const Game = {
 
     updateHUD() {
         this.hud.score.innerText = this.state.score;
-        this.hud.lives.innerText = '♥'.repeat(this.state.lives);
+        this.hud.lives.innerText = '♥'.repeat(Math.max(0, this.state.lives));
     },
 
     showScreen(name) {
@@ -81,6 +81,33 @@ const Game = {
             return;
         }
 
+<<<<<<< HEAD
+        // DYNAMIC GAME SELECTION (SHUFFLE BAG)
+        const availableGames = Object.keys(window.Microgames || {});
+
+        if (availableGames.length === 0) {
+            console.error("No games loaded!");
+            return;
+        }
+
+        // Initialize or Refill Bag if empty
+        if (!this.state.gameBag || this.state.gameBag.length === 0) {
+            console.log("Refilling Game Bag...");
+            this.state.gameBag = [...availableGames];
+
+            // Fisher-Yates Shuffle
+            for (let i = this.state.gameBag.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [this.state.gameBag[i], this.state.gameBag[j]] = [this.state.gameBag[j], this.state.gameBag[i]];
+            }
+        }
+
+        const nextKey = this.state.gameBag.pop();
+        console.log("Selected Game:", nextKey, "Remaining in Bag:", this.state.gameBag);
+
+        const gameModule = window.Microgames[nextKey];
+
+=======
         // Bag Randomization (Play all games before repeating)
         if (!this.gameQueue || this.gameQueue.length === 0) {
             const games = Object.keys(Microgames);
@@ -102,6 +129,7 @@ const Game = {
         const nextKey = this.gameQueue.shift();
         this.lastGameKey = nextKey;
         const gameModule = Microgames[nextKey];
+>>>>>>> 197a70f0576f20db128d4459a718cf399cc8112e
         this.currentGame = { key: nextKey, module: gameModule };
 
         // Transition Screen
@@ -125,6 +153,7 @@ const Game = {
 
         // Start Timer
         const timeAvailable = Math.max(3000, this.config.baseTime / this.state.difficulty);
+        console.log(`[Engine] Starting Round. Difficulty: ${this.state.difficulty}, Time: ${timeAvailable}ms`);
         this.startTimer(timeAvailable);
 
         // Initialize Game
@@ -149,7 +178,11 @@ const Game = {
             if (remaining > 0) {
                 this.timer.id = requestAnimationFrame(frame);
             } else {
-                this.onLose(true); // Timeout
+                if (this.currentGame.module.survive) {
+                    this.onWin(); // Survived!
+                } else {
+                    this.onLose(true); // Timeout
+                }
             }
         };
         this.timer.id = requestAnimationFrame(frame);
@@ -175,6 +208,7 @@ const Game = {
     },
 
     onLose(isTimeout = false) {
+        console.log(`[Engine] Game Lost. IsTimeout: ${isTimeout}`);
         this.stopTimer();
         this.cleanup();
         this.state.lives--;

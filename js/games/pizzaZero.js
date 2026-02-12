@@ -1,5 +1,7 @@
 // --- Microgames (SDG 2 Edition - Zero Hunger) ---
-Microgames.pizzaZero = {
+window.Microgames = window.Microgames || {};
+
+window.Microgames.pizzaZero = {
     instruction: "MAKE A PIZZA! (SDG 2)",
     init: (container, onWin, onLose) => {
         let score = 0;
@@ -230,12 +232,12 @@ Microgames.pizzaZero = {
         spawnTimer = setInterval(spawnIngredient, spawnRate);
         spawnIngredient();
 
-        Microgames.pizzaZero.cleanupFunc = () => {
+        window.Microgames.pizzaZero.cleanupFunc = () => {
             clearInterval(spawnTimer);
         };
     },
     cleanup: () => {
-        if (Microgames.pizzaZero.cleanupFunc) Microgames.pizzaZero.cleanupFunc();
+        if (window.Microgames.pizzaZero.cleanupFunc) window.Microgames.pizzaZero.cleanupFunc();
         const gameArea = document.getElementById('game-area');
         if (gameArea) {
             gameArea.style.background = "";
