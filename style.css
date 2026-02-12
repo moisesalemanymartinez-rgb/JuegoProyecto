@@ -637,4 +637,90 @@ body {
     #main-layout {
         text-shadow: 2px 0 rgba(255, 0, 0, 0.5), -2px 0 rgba(0, 0, 255, 0.5);
     }
+
+    /* Pizza Zero Specifics */
+    .pizza-dough {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, #f5dca0 20%, #e2b66d 80%);
+        border-radius: 50%;
+        border: 12px solid #d4a35a;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow:
+            0 5px 15px rgba(0, 0, 0, 0.3),
+            inset 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        /* Contain sauce/cheese */
+    }
+
+    .pizza-layer {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        bottom: 15px;
+        left: 15px;
+        /* Leave some crust */
+        border-radius: 50%;
+        opacity: 0;
+        transform: scale(0.1);
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease-in;
+    }
+
+    .pizza-layer.sauce {
+        background: radial-gradient(circle, #e62e00 20%, #b32400 90%);
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .pizza-layer.cheese {
+        /* Shredded cheese look: repeating linear gradients */
+        background-color: transparent;
+        background-image:
+            repeating-linear-gradient(45deg, #ffc107 0, #ffc107 5px, transparent 5px, transparent 10px),
+            repeating-linear-gradient(-45deg, #ffeb3b 0, #ffeb3b 5px, transparent 5px, transparent 10px);
+        top: 25px;
+        right: 25px;
+        bottom: 25px;
+        left: 25px;
+        opacity: 0;
+        /* Less blur, more texture */
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .ingredient-item {
+        position: absolute;
+        font-size: 80px;
+        /* Much bigger */
+        cursor: grab;
+        user-select: none;
+        z-index: 100;
+        filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.2));
+        transition: transform 0.1s;
+    }
+
+    .ingredient-item:active {
+        cursor: grabbing;
+        transform: scale(1.2);
+    }
+
+    .ingredient-item:hover {
+        transform: scale(1.1);
+    }
+
+    .topping-on-pizza {
+        position: absolute;
+        font-size: 70px;
+        /* Bigger on pizza */
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    }
+
+    /* Wrong ingredient feedback */
+    .ingredient-item[data-type="bad"]:active {
+        transform: scale(1.2);
+    }
 }
