@@ -120,17 +120,18 @@ const Game = {
                 [this.state.gameBag[i], this.state.gameBag[j]] = [this.state.gameBag[j], this.state.gameBag[i]];
             }
 
-            // Prevent duplicate across bag boundaries (Remote Feature Merged)
-            if (this.state.lastGameKey && this.state.gameBag[this.state.gameBag.length - 1] === this.state.lastGameKey && this.state.gameBag.length > 1) {
-                // Swap last (which is next to pop) with first
-                const lastIdx = this.state.gameBag.length - 1;
-                [this.state.gameBag[0], this.state.gameBag[lastIdx]] = [this.state.gameBag[lastIdx], this.state.gameBag[0]];
+            // Prevent duplicate across bag boundaries
+            // We pop from the end, so the next game is gameBag[gameBag.length - 1]
+            if (this.lastGameKey && this.state.gameBag[this.state.gameBag.length - 1] === this.lastGameKey && this.state.gameBag.length > 1) {
+                // Swap the last element with one that is not the last
+                const swapIdx = Math.floor(Math.random() * (this.state.gameBag.length - 1));
+                [this.state.gameBag[this.state.gameBag.length - 1], this.state.gameBag[swapIdx]] = [this.state.gameBag[swapIdx], this.state.gameBag[this.state.gameBag.length - 1]];
             }
         }
 
         const nextKey = this.state.gameBag.pop();
-        this.state.lastGameKey = nextKey;
-        console.log("Selected Game:", nextKey, "Remaining in Bag:", this.state.gameBag);
+        this.lastGameKey = nextKey;
+        console.log("Selected Game (Forced):", nextKey);
 
         const gameModule = window.Microgames[nextKey];
         this.currentGame = { key: nextKey, module: gameModule };
@@ -181,7 +182,11 @@ const Game = {
             if (remaining > 0) {
                 this.timer.id = requestAnimationFrame(frame);
             } else {
-                this.onLose(true); // Timeout
+                if (this.currentGame.module.survive) {
+                    this.onWin(); // Survived!
+                } else {
+                    this.onLose(true); // Timeout
+                }
             }
         };
         this.timer.id = requestAnimationFrame(frame);
