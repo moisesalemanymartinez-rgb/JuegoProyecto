@@ -81,9 +81,56 @@ const Game = {
             return;
         }
 
-        // ISOLATED MODE: Only Smog Hunt
-        const gameModule = Microgames.smogHunt;
-        this.currentGame = { key: 'smogHunt', module: gameModule };
+<<<<<<< HEAD
+        // DYNAMIC GAME SELECTION (SHUFFLE BAG)
+        const availableGames = Object.keys(window.Microgames || {});
+
+        if (availableGames.length === 0) {
+            console.error("No games loaded!");
+            return;
+        }
+
+        // Initialize or Refill Bag if empty
+        if (!this.state.gameBag || this.state.gameBag.length === 0) {
+            console.log("Refilling Game Bag...");
+            this.state.gameBag = [...availableGames];
+
+            // Fisher-Yates Shuffle
+            for (let i = this.state.gameBag.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [this.state.gameBag[i], this.state.gameBag[j]] = [this.state.gameBag[j], this.state.gameBag[i]];
+            }
+        }
+
+        const nextKey = this.state.gameBag.pop();
+        console.log("Selected Game:", nextKey, "Remaining in Bag:", this.state.gameBag);
+
+        const gameModule = window.Microgames[nextKey];
+
+=======
+        // Bag Randomization (Play all games before repeating)
+        if (!this.gameQueue || this.gameQueue.length === 0) {
+            const games = Object.keys(Microgames);
+            // Shuffle
+            for (let i = games.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [games[i], games[j]] = [games[j], games[i]];
+            }
+
+            // Prevent duplicate across bag boundaries
+            if (this.lastGameKey && games[0] === this.lastGameKey && games.length > 1) {
+                // Swap first with end to avoid repetition
+                [games[0], games[games.length - 1]] = [games[games.length - 1], games[0]];
+            }
+
+            this.gameQueue = games;
+        }
+
+        const nextKey = this.gameQueue.shift();
+        this.lastGameKey = nextKey;
+        const gameModule = Microgames[nextKey];
+>>>>>>> 197a70f0576f20db128d4459a718cf399cc8112e
+        this.currentGame = { key: nextKey, module: gameModule };
 
         // Transition Screen
         document.getElementById('msg-instruction').innerText = gameModule.instruction;
