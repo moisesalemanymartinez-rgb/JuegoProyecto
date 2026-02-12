@@ -724,3 +724,41 @@ body {
         transform: scale(1.2);
     }
 }
+
+/* Mascot Animations */
+@keyframes jump {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-40px);
+    }
+}
+
+.mascot-jump {
+    animation: jump 0.5s ease-in-out infinite !important;
+}
+
+@keyframes sad {
+
+    0%,
+    100% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+
+    25% {
+        transform: translateX(-50%) rotate(-10deg);
+    }
+
+    75% {
+        transform: translateX(-50%) rotate(10deg);
+    }
+}
+
+.mascot-sad {
+    animation: sad 1s ease-in-out infinite !important;
+    filter: grayscale(0.8) brightness(0.8);
+}

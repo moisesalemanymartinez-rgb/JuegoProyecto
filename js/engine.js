@@ -34,8 +34,11 @@ const Game = {
     },
 
     mascot: {
+        container: document.getElementById('mascot-container'),
+        penguin: document.querySelector('.penguin'),
         bubble: document.getElementById('mascot-bubble'),
         timeout: null,
+
         say(text, duration = 2000) {
             clearTimeout(this.timeout);
             this.bubble.innerText = text;
@@ -44,15 +47,32 @@ const Game = {
                 this.bubble.classList.remove('visible');
             }, duration);
         },
+
+        setMood(type) {
+            this.penguin.classList.remove('mascot-jump', 'mascot-sad');
+            if (type === 'win') {
+                this.penguin.classList.add('mascot-jump');
+            } else if (type === 'lose' || type === 'gameover') {
+                this.penguin.classList.add('mascot-sad');
+            }
+        },
+
         react(type) {
             const lines = {
-                win: ["Nice Shot!", "Eco-Warrior!", "Clean Air!", "Ice Work!", "Cool!", "Awesome!"],
-                lose: ["Oh no!", "Pollution!", "Cough Cough!", "Help me!", "Focus!", "Smoggy..."],
-                start: ["Let's clean up!", "Save the planet!", "Ready?"],
-                gameover: ["We failed...", "Try again!", "Don't give up!"]
+                win: ["¡Bien hecho!", "¡Increíble!", "¡Genial!", "¡Buen trabajo!", "¡Sigue así!", "¡Muy bien!"],
+                lose: ["¡Ay no!", "¡Cuidado!", "¡Ups!", "¡Qué pena!", "¡Concéntrate!", "¡Fallaste!"],
+                start: ["¡A limpiar!", "¡Salvemos el mundo!", "¿Listo?", "¡Vamos!"],
+                gameover: ["Se acabó...", "¡Inténtalo de nuevo!", "¡No te rindas!"]
             };
+
             const choice = lines[type][Math.floor(Math.random() * lines[type].length)];
             this.say(choice);
+            this.setMood(type);
+
+            // Reset mood after a while if not gameover
+            if (type !== 'gameover') {
+                setTimeout(() => this.penguin.classList.remove('mascot-jump', 'mascot-sad'), 2000);
+            }
         }
     },
 
