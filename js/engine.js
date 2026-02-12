@@ -109,7 +109,7 @@ const Game = {
             }
         }
 
-        const nextKey = this.state.gameBag.pop();
+        const nextKey = 'rhythmArrows'; // TEMPORARY: Force rhythmArrows only
         this.lastGameKey = nextKey;
         console.log("Selected Game (Forced):", nextKey);
 
