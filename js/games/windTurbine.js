@@ -134,14 +134,14 @@ Microgames.windTurbine = {
             s.style.left = '-100px';
             skySection.appendChild(s);
 
-            // Animate horizontally from left to right
+            // Animate horizontally from left to the center (where turbines are)
+            // easing: 'ease-out' makes it slow down as it approaches the end
             const anim = s.animate([
-                { left: '-100px', transform: 'scale(0.6)', opacity: 0 },
-                { left: '20%', transform: 'scale(1.2)', opacity: 1, offset: 0.2 },
-                { left: '80%', transform: 'scale(1.2)', opacity: 1, offset: 0.8 },
-                { left: '110%', transform: 'scale(1)', opacity: 0 }
+                { left: '-100px', transform: 'scale(0.6) rotate(-10deg)', opacity: 0 },
+                { left: '10%', transform: 'scale(1.2) rotate(0deg)', opacity: 1, offset: 0.2 },
+                { left: '55%', transform: 'scale(1.4) rotate(10deg)', opacity: 0 }
             ], {
-                duration: 1200,
+                duration: 1500, // Slightly longer to better see the deceleration
                 easing: 'ease-out'
             });
 
