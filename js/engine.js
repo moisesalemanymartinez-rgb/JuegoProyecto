@@ -221,9 +221,9 @@ const Game = {
             }
         }
 
-        const nextKey = this.state.gameBag.pop();
+        const nextKey = 'energyBalance'; // TEMPORARY: Force energyBalance only
         this.lastGameKey = nextKey;
-        console.log("Selected Game:", nextKey);
+        console.log("Selected Game (Forced):", nextKey);
 
         const gameModule = window.Microgames[nextKey];
         this.currentGame = { key: nextKey, module: gameModule };
