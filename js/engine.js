@@ -81,9 +81,11 @@ const Game = {
             return;
         }
 
-        // ISOLATED MODE: Only Smog Hunt
-        const gameModule = Microgames.smogHunt;
-        this.currentGame = { key: 'smogHunt', module: gameModule };
+        // RANDOM MODE: Pick any available game
+        const gameKeys = Object.keys(window.Microgames);
+        const randomKey = gameKeys[Math.floor(Math.random() * gameKeys.length)];
+        const gameModule = window.Microgames[randomKey];
+        this.currentGame = { key: randomKey, module: gameModule };
 
         // Transition Screen
         document.getElementById('msg-instruction').innerText = gameModule.instruction;
@@ -130,7 +132,11 @@ const Game = {
             if (remaining > 0) {
                 this.timer.id = requestAnimationFrame(frame);
             } else {
-                this.onLose(true); // Timeout
+                if (this.currentGame.module.survive) {
+                    this.onWin(); // Survived!
+                } else {
+                    this.onLose(true); // Timeout
+                }
             }
         };
         this.timer.id = requestAnimationFrame(frame);
