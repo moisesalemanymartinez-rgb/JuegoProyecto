@@ -67,7 +67,7 @@ const Game = {
 
     updateHUD() {
         this.hud.score.innerText = this.state.score;
-        this.hud.lives.innerText = '♥'.repeat(this.state.lives);
+        this.hud.lives.innerText = '♥'.repeat(Math.max(0, this.state.lives));
     },
 
     showScreen(name) {
@@ -81,9 +81,32 @@ const Game = {
             return;
         }
 
-        // ISOLATED MODE: Only Smog Hunt
-        const gameModule = Microgames.smogHunt;
-        this.currentGame = { key: 'smogHunt', module: gameModule };
+        // DYNAMIC GAME SELECTION (SHUFFLE BAG)
+        const availableGames = Object.keys(window.Microgames || {});
+
+        if (availableGames.length === 0) {
+            console.error("No games loaded!");
+            return;
+        }
+
+        // Initialize or Refill Bag if empty
+        if (!this.state.gameBag || this.state.gameBag.length === 0) {
+            console.log("Refilling Game Bag...");
+            this.state.gameBag = [...availableGames];
+
+            // Fisher-Yates Shuffle
+            for (let i = this.state.gameBag.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [this.state.gameBag[i], this.state.gameBag[j]] = [this.state.gameBag[j], this.state.gameBag[i]];
+            }
+        }
+
+        const nextKey = this.state.gameBag.pop();
+        console.log("Selected Game:", nextKey, "Remaining in Bag:", this.state.gameBag);
+
+        const gameModule = window.Microgames[nextKey];
+
+        this.currentGame = { key: nextKey, module: gameModule };
 
         // Transition Screen
         document.getElementById('msg-instruction').innerText = gameModule.instruction;
@@ -106,6 +129,7 @@ const Game = {
 
         // Start Timer
         const timeAvailable = Math.max(3000, this.config.baseTime / this.state.difficulty);
+        console.log(`[Engine] Starting Round. Difficulty: ${this.state.difficulty}, Time: ${timeAvailable}ms`);
         this.startTimer(timeAvailable);
 
         // Initialize Game
@@ -156,6 +180,7 @@ const Game = {
     },
 
     onLose(isTimeout = false) {
+        console.log(`[Engine] Game Lost. IsTimeout: ${isTimeout}`);
         this.stopTimer();
         this.cleanup();
         this.state.lives--;
