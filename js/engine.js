@@ -101,9 +101,11 @@ const Game = {
             }
 
             // Prevent duplicate across bag boundaries
-            if (this.lastGameKey && this.state.gameBag[0] === this.lastGameKey && this.state.gameBag.length > 1) {
-                // Swap first with end to avoid repetition
-                [this.state.gameBag[0], this.state.gameBag[this.state.gameBag.length - 1]] = [this.state.gameBag[this.state.gameBag.length - 1], this.state.gameBag[0]];
+            // We pop from the end, so the next game is gameBag[gameBag.length - 1]
+            if (this.lastGameKey && this.state.gameBag[this.state.gameBag.length - 1] === this.lastGameKey && this.state.gameBag.length > 1) {
+                // Swap the last element with one that is not the last
+                const swapIdx = Math.floor(Math.random() * (this.state.gameBag.length - 1));
+                [this.state.gameBag[this.state.gameBag.length - 1], this.state.gameBag[swapIdx]] = [this.state.gameBag[swapIdx], this.state.gameBag[this.state.gameBag.length - 1]];
             }
         }
 

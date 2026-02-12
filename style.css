@@ -540,18 +540,17 @@ body {
         width: auto;
         height: auto;
         /* Brushed Nickel / Metallic Effect */
-        background: linear-gradient(135deg, 
-            #bdc3c7 0%, 
-            #95a5a6 20%, 
-            #bdc3c7 40%, 
-            #7f8c8d 60%, 
-            #bdc3c7 80%, 
-            #95a5a6 100%
-        );
+        background: linear-gradient(135deg,
+                #bdc3c7 0%,
+                #95a5a6 20%,
+                #bdc3c7 40%,
+                #7f8c8d 60%,
+                #bdc3c7 80%,
+                #95a5a6 100%);
         /* Subtle brushed lines */
         background-size: 200% 200%;
-        background-image: 
-            repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 2px),
+        background-image:
+            repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 2px),
             linear-gradient(135deg, #bdc3c7 0%, #95a5a6 20%, #bdc3c7 40%, #7f8c8d 60%, #bdc3c7 80%, #95a5a6 100%);
         backdrop-filter: blur(2px);
         border-radius: 30px;
@@ -886,7 +885,6 @@ body {
     }
 
     /* WIND PARTICLES */
-    /* WIND PARTICLES */
     .wind-particle {
         position: absolute;
         left: -50px;
@@ -919,6 +917,51 @@ body {
         100% {
             transform: translateX(500px) translateY(20px) rotate(5deg);
             opacity: 0;
+        }
+    }
+
+    /* CLOUDS */
+    .cloud {
+        position: absolute;
+        width: 100px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        animation: cloudDrift 20s linear infinite alternate;
+        z-index: 1;
+        /* Behind turbines */
+    }
+
+    .cloud::after {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 15px;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+    }
+
+    .cloud::before {
+        content: '';
+        position: absolute;
+        top: -15px;
+        left: 45px;
+        width: 35px;
+        height: 35px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+    }
+
+    @keyframes cloudDrift {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(50px);
         }
     }
 
