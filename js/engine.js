@@ -221,9 +221,9 @@ const Game = {
             }
         }
 
-        const nextKey = 'rhythmArrows'; // TEMPORARY: Force rhythmArrows only
+        const nextKey = this.state.gameBag.pop();
         this.lastGameKey = nextKey;
-        console.log("Selected Game (Forced):", nextKey);
+        console.log("Selected Game:", nextKey);
 
         const gameModule = window.Microgames[nextKey];
         this.currentGame = { key: nextKey, module: gameModule };

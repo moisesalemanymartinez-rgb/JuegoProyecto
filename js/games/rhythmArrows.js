@@ -359,6 +359,11 @@ window.Microgames.rhythmArrows = {
                         }
                         container.style.boxShadow = 'none';
                     }, 100);
+                } else {
+                    // Penalty: If a valid game key is pressed but no note is in the hit zone
+                    isGameOver = true;
+                    onLose();
+                    return;
                 }
             }
         };
