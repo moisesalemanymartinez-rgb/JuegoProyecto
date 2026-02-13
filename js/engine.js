@@ -4,7 +4,8 @@ const Game = {
         score: 0,
         lives: 4,
         difficulty: 1.0,
-        isPlaying: false
+        isPlaying: false,
+        level15Seen: false
     },
     config: {
         baseTime: 10000, // 10s base time
@@ -192,8 +193,17 @@ const Game = {
         this.state.score = 0;
         this.state.lives = 4;
         this.state.difficulty = 1.0;
-        this.updateHUD();
-        this.updateHUD();
+        this.state.level15Seen = false;
+        // Reset console destruction
+        document.querySelectorAll('.screen-crack').forEach(c => c.remove());
+        const damage = document.getElementById('damage-overlay');
+        if (damage) damage.style.opacity = 0;
+        const frame = document.getElementById('console-frame');
+        frame.classList.remove('console-broken');
+        frame.style.display = '';
+        frame.style.visibility = '';
+        this.mascot.container.classList.remove('mascot-ascended');
+
         this.updateHUD();
         this.mascot.penguin.classList.remove('gentleman');
         this.mascot.penguin.classList.remove('president');
@@ -202,6 +212,15 @@ const Game = {
     },
 
     updateHUD() {
+        const frame = document.getElementById('console-frame');
+        const isBroken = frame && frame.classList.contains('console-broken');
+        const bossLayer = document.getElementById('boss-layer');
+
+        if (isBroken && !bossLayer.querySelector('#hud')) {
+            const hud = document.getElementById('hud');
+            if (hud) bossLayer.appendChild(hud);
+        }
+
         this.hud.score.innerText = this.state.score;
         this.hud.lives.innerText = '♥'.repeat(Math.max(0, this.state.lives));
     },
@@ -214,6 +233,12 @@ const Game = {
     nextRound() {
         if (this.state.lives <= 0) {
             this.gameOver();
+            return;
+        }
+
+        // --- SPECIAL EVENT: Level 15 ---
+        if (this.state.score === 15 && !this.state.level15Seen) {
+            this.startLevel15Sequence();
             return;
         }
 
@@ -257,7 +282,7 @@ const Game = {
         this.showScreen('transition');
 
         // Difficulty Speedup
-        this.state.difficulty = 1.0 + (this.state.score * 0.1);
+        this.state.difficulty = 1.0 + (this.state.score * 0.05);
         const waitTime = Math.max(1000, this.config.transitionTime - (this.state.score * 50));
 
         setTimeout(() => {
@@ -268,7 +293,21 @@ const Game = {
     playGame() {
         this.showScreen('game');
         document.getElementById('game-instruction').innerText = this.currentGame.module.instruction;
-        const gameArea = document.getElementById('game-area');
+
+        // --- Use boss-layer if console is broken ---
+        const frame = document.getElementById('console-frame');
+        const isBroken = frame && frame.classList.contains('console-broken');
+        const bossLayer = document.getElementById('boss-layer');
+
+        let gameArea;
+        if (isBroken) {
+            bossLayer.classList.add('active');
+            gameArea = bossLayer;
+        } else {
+            bossLayer.classList.remove('active');
+            gameArea = document.getElementById('game-area');
+        }
+
         gameArea.innerHTML = ''; // Clean previous
 
         // Start Timer
@@ -317,6 +356,7 @@ const Game = {
         this.cleanup();
         this.state.score++;
         this.updateHUD();
+        this.updateCracks();
 
         this.hud.resultMsg.innerText = "SUCCESS!";
         this.hud.resultMsg.style.color = "var(--primary)";
@@ -369,6 +409,78 @@ const Game = {
         document.getElementById('final-score').innerText = this.state.score;
         this.showScreen('gameover');
         this.mascot.react('gameover');
+    },
+
+    updateCracks() {
+        if (this.state.score > 0 && this.state.score < 15) {
+            // Progressive damage overlay
+            const damage = document.getElementById('damage-overlay');
+            if (damage) {
+                damage.style.opacity = (this.state.score / 15) * 0.8;
+            }
+
+            // Periodic cracks (every 2 levels now for more progression)
+            if (this.state.score % 2 === 0) {
+                const crackNum = Math.min(7, Math.floor(this.state.score / 2));
+                const wrapper = document.getElementById('console-screen-wrapper');
+                if (wrapper && !document.querySelector(`.crack-${crackNum}`)) {
+                    const crack = document.createElement('div');
+                    crack.className = `screen-crack crack-${crackNum}`;
+                    wrapper.appendChild(crack);
+                    console.log(`[Engine] Added Crack ${crackNum}`);
+                }
+            }
+        }
+    },
+
+    // --- LEVEL 15 SEQUENCE ---
+    startLevel15Sequence() {
+        console.log("[Engine] Starting Level 15 Special Sequence");
+        this.state.level15Seen = true;
+        this.state.dialogueIndex = 0;
+        this.state.dialogues = [
+            "¿Sí? ¿Así que te crees el mejor?",
+            "Parece que no has tenido suficiente, parece que no has aprendido que los ODS no importan, lo único importante es el dinero...",
+            "¡MAKE AMERICA GREAT AGAIN!"
+        ];
+
+        // Transition Screen as backdrop (Cracked)
+        document.getElementById('msg-instruction').innerText = "ERROR 404";
+        this.showScreen('transition');
+
+        // Initial dialogue
+        this.mascot.say(this.state.dialogues[0], 60000);
+
+        const advance = (e) => {
+            if (e.type === 'keydown' || e.type === 'mousedown') {
+                this.state.dialogueIndex++;
+                if (this.state.dialogueIndex < this.state.dialogues.length) {
+                    this.mascot.say(this.state.dialogues[this.state.dialogueIndex], 60000);
+                } else {
+                    window.removeEventListener('keydown', advance);
+                    window.removeEventListener('mousedown', advance);
+
+                    // --- DESTRUCTION ---
+                    const frame = document.getElementById('console-frame');
+                    frame.classList.add('console-broken');
+                    this.mascot.container.classList.add('mascot-ascended');
+
+                    // Force Boss Fight
+                    const nextKey = 'spaceInvaders';
+                    const gameModule = window.Microgames[nextKey];
+                    this.currentGame = { key: nextKey, module: gameModule };
+                    this.lastGameKey = nextKey;
+
+                    setTimeout(() => {
+                        console.log("[Engine] Climax reached. Starting Boss Fight!");
+                        this.playGame();
+                    }, 1500); // Wait for explosion animation
+                }
+            }
+        };
+
+        window.addEventListener('keydown', advance);
+        window.addEventListener('mousedown', advance);
     }
 };
 // --- Cheat Code ---

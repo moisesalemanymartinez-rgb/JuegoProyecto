@@ -1243,3 +1243,156 @@ body {
 .mascot-shake-hard {
     animation: mascot-shake-hard 0.1s linear infinite !important;
 }
+
+/* --- Console Destruction & Cracking --- */
+.screen-crack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 200;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 1));
+}
+
+/* More detailed, jagged cracks */
+.crack-1 {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10,10 L25,20 L20,35 L35,40' stroke='rgba(255,255,255,0.6)' stroke-width='0.4' fill='none'/></svg>");
+}
+
+.crack-2 {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M100,20 L80,35 L85,50 L65,65 L70,80 L50,95 L55,100 M90,40 L75,45 M65,65 L50,60' stroke='rgba(255,255,255,0.8)' stroke-width='0.6' fill='none'/></svg>");
+}
+
+.crack-3 {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,0 L35,25 L25,40 L50,55 L40,70 L65,90 L60,100 M35,25 L50,20 M50,55 L65,50' stroke='rgba(255,255,255,0.8)' stroke-width='0.6' fill='none'/></svg>");
+}
+
+.crack-4 {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M80,0 L65,25 L75,45 L50,60 L60,80 L35,95 L40,100 M65,25 L50,30 M50,60 L35,65' stroke='rgba(255,255,255,0.8)' stroke-width='0.6' fill='none'/></svg>");
+}
+
+.crack-5 {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M0,80 L20,60 L40,70 L60,50 L80,60 L100,40' stroke='rgba(255,255,255,0.8)' stroke-width='0.6' fill='none'/></svg>");
+}
+
+.crack-6 {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,100 L40,80 L30,60 L50,40 L70,20 L90,0' stroke='rgba(255,255,255,0.8)' stroke-width='0.6' fill='none'/></svg>");
+}
+
+.crack-7 {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50,50 m-10,0 l20,0 m-10,-10 l0,20 m-7,-7 l14,14 m0,-14 l-14,14' stroke='rgba(255,255,255,0.9)' stroke-width='0.8' fill='none'/></svg>");
+}
+
+/* Damage overlay to tint the screen slightly */
+#damage-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 150;
+    background: radial-gradient(circle, transparent 40%, rgba(255, 0, 0, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.console-broken {
+    animation: explode 0.8s forwards !important;
+    pointer-events: none !important;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1) blur(0);
+    }
+
+    30% {
+        transform: scale(1.05) rotate(2deg);
+        filter: brightness(2) blur(2px);
+    }
+
+    60% {
+        transform: scale(1.1) rotate(-2deg);
+        filter: brightness(5) blur(5px);
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.mascot-ascended {
+    position: fixed !important;
+    top: 20% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(2.5) !important;
+    z-index: 1000 !important;
+    margin: 0 !important;
+    transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 0 30px var(--primary));
+}
+
+.mascot-ascended .speech-bubble {
+    top: -120px !important;
+    width: 280px !important;
+    font-size: 1.1rem !important;
+}
+
+/* --- Space Invaders Styles --- */
+.space-ship {
+    position: absolute;
+    bottom: 20px;
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    filter: drop-shadow(0 0 5px var(--primary));
+    z-index: 100;
+}
+
+.bullet {
+    position: absolute;
+    width: 4px;
+    height: 12px;
+    background: var(--secondary);
+    box-shadow: 0 0 8px var(--secondary);
+    z-index: 90;
+}
+
+.enemy-logo {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 0 3px white);
+    z-index: 80;
+}
+
+/* Ensure game area is visible during boss fight */
+#boss-layer {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    background: radial-gradient(circle at center, rgba(34, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.9) 100%);
+    backdrop-filter: blur(4px);
+    display: none;
+    overflow: hidden;
+}
+
+#boss-layer.active {
+    display: block;
+}

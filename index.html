@@ -11,6 +11,8 @@
 
 <body>
 
+    <div id="boss-layer"></div>
+
     <div id="main-layout">
 
         <!-- Mascot (Left Side) -->
@@ -43,6 +45,7 @@
         <div id="console-frame">
 
             <div id="console-screen-wrapper">
+                <div id="damage-overlay"></div>
                 <div class="crt-overlay"></div>
                 <div id="console-container">
 
@@ -81,6 +84,12 @@
                         <button class="btn-retro" onclick="Game.start()">RETRY</button>
                     </div>
 
+                    <div id="screen-victory" class="screen">
+                        <h1>VICTORY!</h1>
+                        <p>You have defeated the corruption!</p>
+                        <button class="btn-retro" onclick="Game.start()">PLAY AGAIN</button>
+                    </div>
+
                 </div>
             </div>
 
@@ -102,6 +111,7 @@
     <script src="js/games/mathChallenge.js"></script>
     <script src="js/games/rhythmArrows.js"></script>
     <script src="js/games/energyBalance.js"></script>
+    <script src="js/games/spaceInvaders.js"></script>
     <script src="js/engine.js"></script>
 </body>
 
