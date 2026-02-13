@@ -574,6 +574,141 @@ button.btn-retro:active {
     border-radius: 50% 50% 50% 10%;
 }
 
+/* --- TRANSFORMATIONS (Score Based) --- */
+
+/* LEVEL 1: SUIT (Score >= 5) */
+/* The suit is a Tuxedo */
+.penguin.suit {
+    /* Ensure the body remains black (jacket color) */
+    background: #1a1a1a;
+}
+
+.penguin.suit .penguin-belly {
+    /* The Shirt - make it narrower like a tuxedo opening */
+    background: #fff;
+    width: 50%;
+    /* Narrower shirt */
+    height: 75%;
+    border-radius: 10% 10% 40% 40%;
+    /* Straighter top for shirt */
+    box-shadow: none;
+    /* Remove old shadow */
+    top: 35px;
+    /* Push shirt down below bowtie area */
+}
+
+/* Bowtie - Center it properly */
+.penguin.suit::before {
+    content: '';
+    position: absolute;
+    top: 35px;
+    /* Neck area */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-left-color: #d32f2f;
+    /* Red bowtie left loop */
+    border-right-color: #d32f2f;
+    /* Red bowtie right loop */
+    /* This triangle hack is tricky for a bowtie, let's use a simpler shape or multiple elements if needed, 
+       but for now let's try a distinct shape */
+    width: 20px;
+    height: 10px;
+    background: #d32f2f;
+    border-radius: 4px;
+    z-index: 20;
+    border: none;
+}
+
+/* Bowtie Knot */
+.penguin.suit::after {
+    content: '';
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    width: 10px;
+    height: 10px;
+    background: #b71c1c;
+    /* Darker red knot */
+    border-radius: 50%;
+    z-index: 21;
+    border: none;
+}
+
+/* Buttons on the shirt */
+.penguin.suit .penguin-belly::after {
+    content: '• •';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #000;
+    font-size: 20px;
+    line-height: 15px;
+    width: 10px;
+    word-wrap: break-word;
+    /* Vertical stack? No, let's use multiple shadows or dots */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    height: auto;
+    width: auto;
+}
+
+/* LEVEL 2: TRUMP HAIR (Score >= 10) */
+/* Hair container relative to penguin */
+.penguin.trump-hair .penguin-face::before {
+    /* The main hair puff */
+    content: '';
+    position: absolute;
+    top: -25px;
+    /* Sit on top */
+    left: -10px;
+    width: 120px;
+    /* Wider than head */
+    height: 50px;
+    background: #ffd700;
+    /* Gold */
+    border-radius: 50% 50% 10% 20%;
+    transform: rotate(-5deg);
+    box-shadow: inset -5px -5px 10px #daa520;
+    z-index: 30;
+}
+
+.penguin.trump-hair .penguin-face::after {
+    /* The visor/swoop */
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -15px;
+    width: 60px;
+    height: 30px;
+    background: #ffd700;
+    border-radius: 0 0 80% 0;
+    transform: rotate(10deg);
+    box-shadow: inset 0 -5px 5px #daa520;
+    z-index: 29;
+}
+
+/* Remove old conflicting pseudo elements on .penguin.suit if any targeted differently above */
+/* Note: The previous code laid out suit on .penguin-belly::before/after. 
+   We successfully overrode .penguin.suit .penguin-belly::before/after in the block above? 
+   Wait, the selector `.penguin.suit .penguin-belly::after` for buttons conflicts with the red triangle triangle bottom.
+   Let's ensure we clear the old styles. */
+
+.penguin.suit .penguin-belly::before {
+    /* Clear old bowtie parts */
+    content: none;
+    border: none;
+}
+
+
 .speech-bubble {
     position: absolute;
     top: -100px;
@@ -591,7 +726,8 @@ button.btn-retro:active {
     opacity: 0;
     transition: opacity 0.3s;
     font-family: var(--font);
-    z-index: 20;
+    z-index: 30;
+    /* Above hair */
 }
 
 .speech-bubble::after {
