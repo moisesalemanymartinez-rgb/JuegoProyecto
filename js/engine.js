@@ -40,8 +40,6 @@ const Game = {
         timeout: null,
         moodTimeout: null,
 
-        language: 'es', // Default language
-
         say(text, duration = 2000) {
             clearTimeout(this.timeout);
             this.bubble.innerText = text;
@@ -53,12 +51,10 @@ const Game = {
 
         setMood(type) {
             clearTimeout(this.moodTimeout);
-            // console.log(`[Mascot] Setting Mood: ${type}`);
+            console.log(`[Mascot] Setting Mood: ${type}`);
 
-            const anims = ['mascot-jump', 'mascot-sad', 'mascot-flip', 'mascot-spin', 'mascot-tremble', 'mascot-shrink', 'mascot-bounce', 'mascot-glow', 'mascot-swing', 'mascot-shake-hard'];
-
-            // Remove ONLY animation classes, keep transformation classes (.suit, .trump-hair)
-            this.penguin.classList.remove(...anims);
+            const classes = ['mascot-jump', 'mascot-sad', 'mascot-flip', 'mascot-spin', 'mascot-tremble', 'mascot-shrink', 'mascot-bounce', 'mascot-glow', 'mascot-swing', 'mascot-shake-hard'];
+            this.penguin.classList.remove(...classes);
 
             void this.penguin.offsetWidth; // Force reflow
 
@@ -78,11 +74,12 @@ const Game = {
             const targetClass = moodMap[type];
             if (targetClass) {
                 this.penguin.classList.add(targetClass);
+                console.log(`[Mascot] Added Class: ${targetClass}`);
             }
         },
 
         react(type) {
-            const linesES = {
+            const lines = {
                 win: [
                     "¡Así me gusta, fiera!",
                     "¡Qué sexy te ves ganando!",
@@ -144,69 +141,6 @@ const Game = {
                 ]
             };
 
-            const linesEN = {
-                win: [
-                    "Tremendous win! Big league!",
-                    "I have the best players, folks!",
-                    "Winning so much, you'll get tired of winning!",
-                    "Huge success! Everyone agrees!",
-                    "Make Gaming Great Again!",
-                    "Nobody wins better than you, believe me.",
-                    "You're a winner, I like winners.",
-                    "Absolutely fantastic! The best!",
-                    "Smart move! Very high IQ!",
-                    "We are going to win so much!",
-                    "Total domination! Sad for the losers!",
-                    "You're fired... just kidding, you're hired!",
-                    "A beautiful victory, perfect call.",
-                    "They said it couldn't be done. Wrong!",
-                    "China can't beat this score!",
-                    "Score goes up like a rocket!",
-                    "Billions and billions of points!",
-                    "I know words, I have the best words: You Win!"
-                ],
-                lose: [
-                    "Wrong! Fake news!",
-                    "Total disaster! Sad!",
-                    "You're fired!",
-                    "Low energy performance.",
-                    "Worst trade deal in history.",
-                    "Nasty woman... or man... simply nasty play.",
-                    "Start winning, stop losing!",
-                    "Is this rigged? Looks rigged.",
-                    "Crooked gameplay!",
-                    "This is a witch hunt against skill!",
-                    "I don't take responsibility at all.",
-                    "You're lightweight! Choker!",
-                    "Not good! Not good at all!",
-                    "Loser! Big loser!",
-                    "Covfefe?"
-                ],
-                start: [
-                    "We are going to do big things!",
-                    "Let's build a wall of high scores!",
-                    "It's going to be huge!",
-                    "I alone can fix this game.",
-                    "Let's make this game great again!",
-                    "Time to win bigly!",
-                    "Believe me, it's gonna be tremendous.",
-                    "Start the game! Lock her up!",
-                    "Don't be a loser, okay?"
-                ],
-                gameover: [
-                    "You're fired! Get out!",
-                    "Total failure. Sad.",
-                    "The system is rigged against you!",
-                    "Shutdown! The government is closed!",
-                    "Go home to mommy!",
-                    "Worst game ever? Maybe!",
-                    "Collusion! Start over!",
-                    "You have very small hands (skills).",
-                    "Fake gamer! Sad!"
-                ]
-            };
-
-            const lines = (this.language === 'en') ? linesEN : linesES;
             const choice = lines[type][Math.floor(Math.random() * lines[type].length)];
             this.say(choice);
 
@@ -228,8 +162,7 @@ const Game = {
             // Reset mood after a while if not gameover
             if (type !== 'gameover') {
                 this.moodTimeout = setTimeout(() => {
-                    const anims = ['mascot-jump', 'mascot-sad', 'mascot-flip', 'mascot-spin', 'mascot-tremble', 'mascot-shrink', 'mascot-bounce', 'mascot-glow', 'mascot-swing', 'mascot-shake-hard'];
-                    this.penguin.classList.remove(...anims);
+                    this.penguin.classList.remove('mascot-jump', 'mascot-sad', 'mascot-flip', 'mascot-spin', 'mascot-tremble', 'mascot-shrink', 'mascot-bounce', 'mascot-glow', 'mascot-swing', 'mascot-shake-hard');
                 }, 1500); // Shorter cooldown
             }
         }
@@ -288,9 +221,9 @@ const Game = {
             }
         }
 
-        const nextKey = 'energyBalance'; // TEMPORARY: Force energyBalance only
+        const nextKey = this.state.gameBag.pop();
         this.lastGameKey = nextKey;
-        console.log("Selected Game (Forced):", nextKey);
+        console.log("Selected Game:", nextKey);
 
         const gameModule = window.Microgames[nextKey];
         this.currentGame = { key: nextKey, module: gameModule };
@@ -361,8 +294,6 @@ const Game = {
         this.state.score++;
         this.updateHUD();
 
-        this.checkTransformations();
-
         this.hud.resultMsg.innerText = "SUCCESS!";
         this.hud.resultMsg.style.color = "var(--primary)";
         this.showScreen('result');
@@ -370,34 +301,6 @@ const Game = {
         this.mascot.react('win');
 
         setTimeout(() => this.nextRound(), this.config.resultTime);
-    },
-
-    checkTransformations() {
-        // --- TRANSFORMATIONS ---
-        if (this.state.score === 5) {
-            this.mascot.penguin.classList.add('suit');
-            this.mascot.say("¡Me siento elegante!");
-        }
-        if (this.state.score === 10) {
-            this.mascot.penguin.classList.add('trump-hair');
-            this.mascot.say("It's gonna be HUGE!");
-        }
-        if (this.state.score >= 14) {
-            this.mascot.language = 'en';
-        }
-    },
-
-    enableCheats() {
-        console.log("[Engine] Cheats Enabled: Press 'k' for +1 Score");
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'k' || e.key === 'K') {
-                this.state.score++;
-                this.updateHUD();
-                this.checkTransformations();
-                this.mascot.say("CHEAT +1");
-                console.log(`[Cheat] Score: ${this.state.score}`);
-            }
-        });
     },
 
     onLose(isTimeout = false) {
@@ -436,6 +339,3 @@ const Game = {
         this.mascot.react('gameover');
     }
 };
-
-// Enable cheats immediately
-Game.enableCheats();
