@@ -141,8 +141,28 @@ const Game = {
                 ]
             };
 
-            const choice = lines[type][Math.floor(Math.random() * lines[type].length)];
-            this.say(choice);
+            let phraseList = lines[type];
+
+            // Level 14: English Mode (President Style)
+            // Use Game.state.score if this.state is not available (checking context)
+            const currentScore = Game.state.score;
+
+            if (currentScore >= 14) {
+                const linesEnglish = {
+                    win: ["Tremendous!", "Huge win!", "Make Gaming Great Again!", "Bigly!", "You're a winner!", "I know winning.", "So much winning!", "Best score ever.", "China can't beat this."],
+                    lose: ["Sad!", "Fake news!", "You're fired!", "Low energy.", "Disaster!", "Total disaster!", "Rigged!", "Nasty!", "I don't like losers."],
+                    start: ["Let's make it great!", "It's gonna be huge.", "Believe me.", "I have the best words.", "I build the best levels."],
+                    gameover: ["STOP THE COUNT!", "Witch hunt!", "I won, by a lot!", "Fake media!", "Rigged election!"]
+                };
+                if (linesEnglish[type]) {
+                    phraseList = linesEnglish[type];
+                }
+            }
+
+            if (phraseList && phraseList.length > 0) {
+                const choice = phraseList[Math.floor(Math.random() * phraseList.length)];
+                this.say(choice);
+            }
 
             // Logic to choose animation based on type (High Frequency)
             if (type === 'win') {
@@ -173,6 +193,10 @@ const Game = {
         this.state.lives = 4;
         this.state.difficulty = 1.0;
         this.updateHUD();
+        this.updateHUD();
+        this.updateHUD();
+        this.mascot.penguin.classList.remove('gentleman');
+        this.mascot.penguin.classList.remove('president');
         this.mascot.react('start');
         this.nextRound();
     },
@@ -300,6 +324,14 @@ const Game = {
 
         this.mascot.react('win');
 
+        // Check for Transformation (Score 5 -> Level 5, Score 10 -> Level 10)
+        if (this.state.score >= 10) {
+            this.mascot.penguin.classList.remove('gentleman');
+            this.mascot.penguin.classList.add('president');
+        } else if (this.state.score >= 5) {
+            this.mascot.penguin.classList.add('gentleman');
+        }
+
         setTimeout(() => this.nextRound(), this.config.resultTime);
     },
 
@@ -339,3 +371,22 @@ const Game = {
         this.mascot.react('gameover');
     }
 };
+// --- Cheat Code ---
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'k' || e.key === 'K') {
+        if (!Game.state.isPlaying && Game.state.lives > 0) {
+            // Maybe allow outside game? Or only in game. Let's allow anytime for testing.
+        }
+        Game.state.score++;
+        Game.updateHUD();
+        console.log(`[Cheat] Score: ${Game.state.score}`);
+
+        // Trigger Tuxedo Check
+        if (Game.state.score >= 10) {
+            Game.mascot.penguin.classList.remove('gentleman');
+            Game.mascot.penguin.classList.add('president');
+        } else if (Game.state.score >= 5) {
+            Game.mascot.penguin.classList.add('gentleman');
+        }
+    }
+});
