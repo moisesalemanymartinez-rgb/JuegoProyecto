@@ -15,7 +15,10 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #222;
+    /* Custom Premium Mix: Deep Violet -> Neon Purple -> Cyber Blue -> Dark Ocean */
+    background: linear-gradient(-45deg, #2E004E, #8900FF, #00C3FF, #004E92);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
     font-family: var(--font);
     overflow: hidden;
 
@@ -741,7 +744,6 @@ body {
         height: 30%;
         /* 30% of screen */
         background: radial-gradient(circle at 50% 0%, #4CAF50, #2E7D32);
-        /* Green grass */
         display: flex;
         justify-content: center;
         align-items: center;
