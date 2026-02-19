@@ -27,6 +27,18 @@ window.Microgames.educationalBattle = {
         battleBox.style.overflow = 'hidden';
         container.appendChild(battleBox);
 
+        // Sans Reference (Easter Egg)
+        const sans = document.createElement('img');
+        sans.src = 'assets/sans.png';
+        sans.style.position = 'absolute';
+        sans.style.bottom = '70px';
+        sans.style.right = '10px';
+        sans.style.width = '50px';
+        sans.style.opacity = '0.8';
+        sans.style.pointerEvents = 'none';
+        sans.style.zIndex = '5';
+        container.appendChild(sans);
+
         // Player (Heart)
         const player = document.createElement('div');
         player.style.position = 'absolute';
