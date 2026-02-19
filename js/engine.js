@@ -243,7 +243,8 @@ const Game = {
         }
 
         // DYNAMIC GAME SELECTION (SHUFFLE BAG)
-        const availableGames = Object.keys(window.Microgames || {});
+        // const availableGames = Object.keys(window.Microgames || {});
+        const availableGames = ['educationalBattle'];
 
         if (availableGames.length === 0) {
             console.error("No games loaded!");
