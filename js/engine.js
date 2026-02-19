@@ -5,7 +5,8 @@ const Game = {
         lives: 4,
         difficulty: 1.0,
         isPlaying: false,
-        level15Seen: false
+        level15Seen: false,
+        gameBag: []
     },
     config: {
         baseTime: 10000, // 10s base time
@@ -243,8 +244,9 @@ const Game = {
         }
 
         // DYNAMIC GAME SELECTION (SHUFFLE BAG)
-        // const availableGames = Object.keys(window.Microgames || {});
-        const availableGames = ['educationalBattle'];
+        const allGames = Object.keys(window.Microgames || {});
+        // Filter out boss games from normal rotation
+        const availableGames = allGames.filter(key => !window.Microgames[key].isBoss);
 
         if (availableGames.length === 0) {
             console.error("No games loaded!");
@@ -262,10 +264,9 @@ const Game = {
                 [this.state.gameBag[i], this.state.gameBag[j]] = [this.state.gameBag[j], this.state.gameBag[i]];
             }
 
-            // Prevent duplicate across bag boundaries
-            // We pop from the end, so the next game is gameBag[gameBag.length - 1]
+            // Prevent immediate duplicate across bag boundaries
             if (this.lastGameKey && this.state.gameBag[this.state.gameBag.length - 1] === this.lastGameKey && this.state.gameBag.length > 1) {
-                // Swap the last element with one that is not the last
+                // Swap the last element (which will be popped first) with another one
                 const swapIdx = Math.floor(Math.random() * (this.state.gameBag.length - 1));
                 [this.state.gameBag[this.state.gameBag.length - 1], this.state.gameBag[swapIdx]] = [this.state.gameBag[swapIdx], this.state.gameBag[this.state.gameBag.length - 1]];
             }
@@ -273,7 +274,7 @@ const Game = {
 
         const nextKey = this.state.gameBag.pop();
         this.lastGameKey = nextKey;
-        console.log("Selected Game:", nextKey);
+        console.log("Selected Game:", nextKey, "Remaining in bag:", this.state.gameBag.length);
 
         const gameModule = window.Microgames[nextKey];
         this.currentGame = { key: nextKey, module: gameModule };
