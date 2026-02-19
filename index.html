@@ -1,119 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WarioWare Microgames</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Microgames+ | Level Up Learning</title>
+    <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-    <div id="boss-layer"></div>
+    <!-- Navbar -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-gamepad"></i> Microgames+
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#games">Juegos</a></li>
+                <li><a href="#leaderboard">Leaderboard</a></li>
+                <li><a href="#about">Misión OCDE</a></li>
+            </ul>
+        </nav>
+        <a href="game.html" class="play-btn-small">Jugar Ahora</a>
+    </header>
 
-    <div id="main-layout">
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Level Up Your <br> <span>Global Competence</span></h1>
+        <p>Acceso instantáneo a minijuegos premium diseñados para desarrollar habilidades del Marco de Aprendizaje 2030
+            de la OCDE.</p>
+        <a href="game.html" class="cta-btn">
+            <i class="fas fa-play"></i> Jugar Ahora
+        </a>
+    </section>
 
-        <!-- Mascot (Left Side) -->
-        <div id="mascot-container">
-            <div class="speech-bubble" id="mascot-bubble">Hello!</div>
-            <div class="penguin">
-                <div class="penguin-belly"></div>
-
-
-                <!-- Level 5 Full Character (Hidden by default) -->
-                <img src="assets/penguin_lvl5.png" class="penguin-lvl5" alt="Gentleman Penguin">
-
-                <!-- Level 10 Full Character (Hidden by default) -->
-                <img src="assets/penguin_lvl10.png" class="penguin-lvl10" alt="President Penguin">
-
-                <div class="penguin-face">
-                    <div class="eye left">
-                        <div class="pupil"></div>
-                    </div>
-                    <div class="eye right">
-                        <div class="pupil"></div>
-                    </div>
-                    <div class="beak"></div>
-                </div>
-            </div>
-            <div class="iceberg"></div>
+    <!-- Games Grid -->
+    <section id="games" class="games-section">
+        <div class="section-title">
+            <i class="fas fa-fire-alt"></i> Trending Now
         </div>
 
-        <!-- Game Console (Vertical) -->
-        <div id="console-frame">
+        <div class="games-grid">
 
-            <div id="console-screen-wrapper">
-                <div id="damage-overlay"></div>
-                <div class="crt-overlay"></div>
-                <div id="console-container">
-
-                    <!-- Screens -->
-                    <div id="screen-start" class="screen active">
-                        <h1>MICRO<br>GAMES</h1>
-                        <p class="pulse">PRESS START</p>
-                        <button class="btn-retro" onclick="Game.start()">START</button>
-                    </div>
-
-                    <div id="screen-transition" class="screen"
-                        style="background: var(--secondary); color: var(--text);">
-                        <h2 id="msg-instruction">GET READY</h2>
-                    </div>
-
-                    <div id="screen-game" class="screen">
-                        <h2 id="game-instruction"
-                            style="position: absolute; top: 20px; width: 100%; z-index: 10; pointer-events: none;"></h2>
-                        <div id="game-area"></div>
-                        <div id="timer-bar-container">
-                            <div id="timer-bar"></div>
-                        </div>
-                        <div id="hud">
-                            <div class="hud-item hud-score">SCORE: <span id="score-val">0</span></div>
-                            <div class="hud-item lives">♥♥♥♥</div>
-                        </div>
-                    </div>
-
-                    <div id="screen-result" class="screen">
-                        <h2 id="result-msg">WIN!</h2>
-                    </div>
-
-                    <div id="screen-gameover" class="screen">
-                        <h1 style="color:red">GAME<br>OVER</h1>
-                        <p>Score: <span id="final-score">0</span></p>
-                        <button class="btn-retro" onclick="Game.start()">RETRY</button>
-                    </div>
-
-                    <div id="screen-victory" class="screen">
-                        <h1>VICTORY!</h1>
-                        <p>You have defeated the corruption!</p>
-                        <button class="btn-retro" onclick="Game.start()">PLAY AGAIN</button>
-                    </div>
-
+            <!-- Smog Hunt -->
+            <div class="game-card">
+                <div class="card-image">
+                    <div class="ocde-tag">ODS 13: Acción por el Clima</div>
+                    <i class="fas fa-smog card-img-placeholder" style="color: #a29bfe;"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="game-title">Caza de Esmog</h3>
+                    <p class="game-desc">Reduce la contaminación atrapando nubes de esmog. Fomenta la conciencia
+                        medioambiental y la responsabilidad cívica según los estándares de la OCDE.</p>
+                    <a href="game.html" class="play-link">Jugar <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
-            <!-- Controls Area -->
-            <!-- CONTROLS REMOVED -->
+            <!-- Marine Trash -->
+            <div class="game-card">
+                <div class="card-image">
+                    <div class="ocde-tag">ODS 14: Vida Submarina</div>
+                    <i class="fas fa-water card-img-placeholder" style="color: #74b9ff;"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="game-title">Limpieza Marina</h3>
+                    <p class="game-desc">Limpia los océanos de residuos plásticos. Desarrolla la competencia global de
+                        sostenibilidad y protección de ecosistemas marinos.</p>
+                    <a href="game.html" class="play-link">Jugar <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Wind Turbine -->
+            <div class="game-card">
+                <div class="card-image">
+                    <div class="ocde-tag">ODS 7: Energía Limpia</div>
+                    <i class="fas fa-wind card-img-placeholder" style="color: #00cec9;"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="game-title">Energía Eólica</h3>
+                    <p class="game-desc">Genera energía renovable manteniendo las turbinas. Promueve el conocimiento
+                        científico sobre fuentes de energía sostenibles.</p>
+                    <a href="game.html" class="play-link">Jugar <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Plant Grow -->
+            <div class="game-card">
+                <div class="card-image">
+                    <div class="ocde-tag">ODS 15: Vida de Ecosistemas</div>
+                    <i class="fas fa-seedling card-img-placeholder" style="color: #55efc4;"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="game-title">Reforestación</h3>
+                    <p class="game-desc">Planta y cuida árboles para restaurar el bosque. Enfocado en la responsabilidad
+                        ambiental y el ciclo de vida de las plantas.</p>
+                    <a href="game.html" class="play-link">Jugar <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Educational Battle -->
+            <div class="game-card">
+                <div class="card-image">
+                    <div class="ocde-tag">ODS 4: Educación de Calidad</div>
+                    <i class="fas fa-book-reader card-img-placeholder" style="color: #fd79a8;"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="game-title">Batalla del Conocimiento</h3>
+                    <p class="game-desc">Desafía tu mente con preguntas clave. Mejora la alfabetización fundamental y el
+                        pensamiento crítico.</p>
+                    <a href="game.html" class="play-link">Jugar <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Heart Beat -->
+            <div class="game-card">
+                <div class="card-image">
+                    <div class="ocde-tag">ODS 3: Salud y Bienestar</div>
+                    <i class="fas fa-heartbeat card-img-placeholder" style="color: #e17055;"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="game-title">Ritmo Vital</h3>
+                    <p class="game-desc">Mantén el ritmo cardíaco saludable. Conciencia sobre la importancia del
+                        ejercicio y la salud cardiovascular.</p>
+                    <a href="game.html" class="play-link">Jugar <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
 
         </div>
+    </section>
 
-    </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Microgames+. All rights reserved. Designed for Impact.</p>
+    </footer>
 
-    <!-- Game Scripts -->
-    <script src="js/games/heartBeat.js"></script>
-    <script src="js/games/marineTrash.js"></script>
-    <script src="js/games/smogHunt.js"></script>
-    <script src="js/games/bikeLane.js"></script>
-    <script src="js/games/pizzaZero.js"></script>
-    <script src="js/games/plantGrow.js"></script>
-    <script src="js/games/windTurbine.js"></script>
-    <script src="js/games/mathChallenge.js"></script>
-    <script src="js/games/rhythmArrows.js"></script>
-    <script src="js/games/energyBalance.js"></script>
-    <script src="js/games/spaceInvaders.js"></script>
-    <script src="js/games/educationalBattle.js"></script>
-    <script src="js/engine.js"></script>
 </body>
 
 </html>
