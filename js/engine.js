@@ -237,11 +237,7 @@ const Game = {
             return;
         }
 
-        // --- SPECIAL EVENT: Level 15 ---
-        if (this.state.score === 15 && !this.state.level15Seen) {
-            this.startLevel15Sequence();
-            return;
-        }
+        // Removed Level 15 sequence to allow infinite mode
 
         // DYNAMIC GAME SELECTION (SHUFFLE BAG)
         const allGames = Object.keys(window.Microgames || {});
@@ -433,56 +429,6 @@ const Game = {
                 }
             }
         }
-    },
-
-    // --- LEVEL 15 SEQUENCE ---
-    startLevel15Sequence() {
-        console.log("[Engine] Starting Level 15 Special Sequence");
-        this.state.level15Seen = true;
-        this.state.dialogueIndex = 0;
-        this.state.dialogues = [
-            "¿Sí? ¿Así que te crees el mejor?",
-            "Parece que no has tenido suficiente, parece que no has aprendido que los ODS no importan, lo único importante es el dinero...",
-            "¡MAKE AMERICA GREAT AGAIN!"
-        ];
-
-        // Transition Screen as backdrop (Cracked)
-        document.getElementById('msg-instruction').innerText = "ERROR 404";
-        this.showScreen('transition');
-
-        // Initial dialogue
-        this.mascot.say(this.state.dialogues[0], 60000);
-
-        const advance = (e) => {
-            if (e.type === 'keydown' || e.type === 'mousedown') {
-                this.state.dialogueIndex++;
-                if (this.state.dialogueIndex < this.state.dialogues.length) {
-                    this.mascot.say(this.state.dialogues[this.state.dialogueIndex], 60000);
-                } else {
-                    window.removeEventListener('keydown', advance);
-                    window.removeEventListener('mousedown', advance);
-
-                    // --- DESTRUCTION ---
-                    const frame = document.getElementById('console-frame');
-                    frame.classList.add('console-broken');
-                    this.mascot.container.classList.add('mascot-ascended');
-
-                    // Force Boss Fight
-                    const nextKey = 'spaceInvaders';
-                    const gameModule = window.Microgames[nextKey];
-                    this.currentGame = { key: nextKey, module: gameModule };
-                    this.lastGameKey = nextKey;
-
-                    setTimeout(() => {
-                        console.log("[Engine] Climax reached. Starting Boss Fight!");
-                        this.playGame();
-                    }, 1500); // Wait for explosion animation
-                }
-            }
-        };
-
-        window.addEventListener('keydown', advance);
-        window.addEventListener('mousedown', advance);
     }
 };
 // --- Cheat Code ---
