@@ -5,7 +5,7 @@ const Game = {
         lives: 4,
         difficulty: 1.0,
         isPlaying: false,
-        level15Seen: false,
+
         gameBag: []
     },
     config: {
@@ -194,15 +194,7 @@ const Game = {
         this.state.score = 0;
         this.state.lives = 4;
         this.state.difficulty = 1.0;
-        this.state.level15Seen = false;
-        // Reset console destruction
-        document.querySelectorAll('.screen-crack').forEach(c => c.remove());
-        const damage = document.getElementById('damage-overlay');
-        if (damage) damage.style.opacity = 0;
-        const frame = document.getElementById('console-frame');
-        frame.classList.remove('console-broken');
-        frame.style.display = '';
-        frame.style.visibility = '';
+
         this.mascot.container.classList.remove('mascot-ascended');
 
         this.updateHUD();
@@ -213,14 +205,7 @@ const Game = {
     },
 
     updateHUD() {
-        const frame = document.getElementById('console-frame');
-        const isBroken = frame && frame.classList.contains('console-broken');
-        const bossLayer = document.getElementById('boss-layer');
 
-        if (isBroken && !bossLayer.querySelector('#hud')) {
-            const hud = document.getElementById('hud');
-            if (hud) bossLayer.appendChild(hud);
-        }
 
         this.hud.score.innerText = this.state.score;
         this.hud.lives.innerText = '♥'.repeat(Math.max(0, this.state.lives));
@@ -292,20 +277,7 @@ const Game = {
         this.showScreen('game');
         document.getElementById('game-instruction').innerText = this.currentGame.module.instruction;
 
-        // --- Use boss-layer if console is broken ---
-        const frame = document.getElementById('console-frame');
-        const isBroken = frame && frame.classList.contains('console-broken');
-        const bossLayer = document.getElementById('boss-layer');
-
-        let gameArea;
-        if (isBroken) {
-            bossLayer.classList.add('active');
-            gameArea = bossLayer;
-        } else {
-            bossLayer.classList.remove('active');
-            gameArea = document.getElementById('game-area');
-        }
-
+        const gameArea = document.getElementById('game-area');
         gameArea.innerHTML = ''; // Clean previous
 
         // Start Timer
@@ -354,7 +326,6 @@ const Game = {
         this.cleanup();
         this.state.score++;
         this.updateHUD();
-        this.updateCracks();
 
         this.hud.resultMsg.innerText = "SUCCESS!";
         this.hud.resultMsg.style.color = "var(--primary)";
@@ -409,27 +380,7 @@ const Game = {
         this.mascot.react('gameover');
     },
 
-    updateCracks() {
-        if (this.state.score > 0 && this.state.score < 15) {
-            // Progressive damage overlay
-            const damage = document.getElementById('damage-overlay');
-            if (damage) {
-                damage.style.opacity = (this.state.score / 15) * 0.8;
-            }
 
-            // Periodic cracks (every 2 levels now for more progression)
-            if (this.state.score % 2 === 0) {
-                const crackNum = Math.min(7, Math.floor(this.state.score / 2));
-                const wrapper = document.getElementById('console-screen-wrapper');
-                if (wrapper && !document.querySelector(`.crack-${crackNum}`)) {
-                    const crack = document.createElement('div');
-                    crack.className = `screen-crack crack-${crackNum}`;
-                    wrapper.appendChild(crack);
-                    console.log(`[Engine] Added Crack ${crackNum}`);
-                }
-            }
-        }
-    }
 };
 // --- Cheat Code ---
 document.addEventListener('keydown', (e) => {
