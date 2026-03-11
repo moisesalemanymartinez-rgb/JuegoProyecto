@@ -15,10 +15,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Custom Premium Mix: Deep Violet -> Neon Purple -> Cyber Blue -> Dark Ocean */
-    background: linear-gradient(-45deg, #2E004E, #8900FF, #00C3FF, #004E92);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    /* Match Landing Page Background with Gradient */
+    background-color: #0d0d12;
+    background-image: radial-gradient(circle at center, rgba(108, 92, 231, 0.1) 0%, transparent 70%);
     font-family: var(--font);
     overflow: hidden;
 

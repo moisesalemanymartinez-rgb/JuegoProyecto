@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WarioWare Microgames</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="boss-layer"></div>
+
+    <div id="main-layout">
+
+        <!-- Mascot (Left Side) -->
+        <div id="mascot-container">
+            <div class="speech-bubble" id="mascot-bubble">Hello!</div>
+            <div class="penguin">
+                <div class="penguin-belly"></div>
+
+
+                <!-- Level 5 Full Character (Hidden by default) -->
+                <img src="assets/penguin_lvl5.png" class="penguin-lvl5" alt="Gentleman Penguin">
+
+                <!-- Level 10 Full Character (Hidden by default) -->
+                <img src="assets/penguin_lvl10.png" class="penguin-lvl10" alt="President Penguin">
+
+                <div class="penguin-face">
+                    <div class="eye left">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="eye right">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="beak"></div>
+                </div>
+            </div>
+            <div class="iceberg"></div>
+        </div>
+
+        <!-- Game Console (Vertical) -->
+        <div id="console-frame">
+
+            <div id="console-screen-wrapper">
+                <div id="damage-overlay"></div>
+                <div class="crt-overlay"></div>
+                <div id="console-container">
+
+                    <!-- Screens -->
+                    <div id="screen-start" class="screen active">
+                        <h1>MICRO<br>GAMES</h1>
+                        <p class="pulse">PRESS START</p>
+                        <button class="btn-retro" onclick="Game.start()">START</button>
+                    </div>
+
+                    <div id="screen-transition" class="screen"
+                        style="background: var(--secondary); color: var(--text);">
+                        <h2 id="msg-instruction">GET READY</h2>
+                    </div>
+
+                    <div id="screen-game" class="screen">
+                        <h2 id="game-instruction"
+                            style="position: absolute; top: 20px; width: 100%; z-index: 10; pointer-events: none;"></h2>
+                        <div id="game-area"></div>
+                        <div id="timer-bar-container">
+                            <div id="timer-bar"></div>
+                        </div>
+                        <div id="hud">
+                            <div class="hud-item hud-score">SCORE: <span id="score-val">0</span></div>
+                            <div class="hud-item lives">♥♥♥♥</div>
+                        </div>
+                    </div>
+
+                    <div id="screen-result" class="screen">
+                        <h2 id="result-msg">WIN!</h2>
+                    </div>
+
+                    <div id="screen-gameover" class="screen">
+                        <h1 style="color:red">GAME<br>OVER</h1>
+                        <p>Score: <span id="final-score">0</span></p>
+                        <button class="btn-retro" onclick="Game.start()">RETRY</button>
+                    </div>
+
+                    <div id="screen-victory" class="screen">
+                        <h1>VICTORY!</h1>
+                        <p>You have defeated the corruption!</p>
+                        <button class="btn-retro" onclick="Game.start()">PLAY AGAIN</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls Area -->
+            <!-- CONTROLS REMOVED -->
+
+        </div>
+
+    </div>
+
+    <!-- Game Scripts -->
+    <script src="js/games/heartBeat.js"></script>
+    <script src="js/games/marineTrash.js"></script>
+    <script src="js/games/smogHunt.js"></script>
+    <script src="js/games/bikeLane.js"></script>
+    <script src="js/games/pizzaZero.js"></script>
+    <script src="js/games/plantGrow.js"></script>
+    <script src="js/games/windTurbine.js"></script>
+    <script src="js/games/mathChallenge.js"></script>
+    <script src="js/games/rhythmArrows.js"></script>
+    <script src="js/games/energyBalance.js"></script>
+    <script src="js/games/spaceInvaders.js"></script>
+    <script src="js/games/educationalBattle.js"></script>
+    <script src="js/engine.js"></script>
+</body>
+
+</html>
