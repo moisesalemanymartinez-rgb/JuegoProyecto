@@ -1,49 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-
+/* Base Styles */
 :root {
-    --bg-color: #0d0d12;
     --primary: #6c5ce7;
     --secondary: #a29bfe;
     --accent: #00cec9;
+    --bg-dark: #0f0f13;
+    --card-bg: #1a1a20;
     --text-color: #ffffff;
-    --card-bg: #1e1e24;
-    --font-main: 'Outfit', sans-serif;
+    --nav-bg: rgba(15, 15, 19, 0.95);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: var(--font-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 body {
-    background-color: var(--bg-color);
+    background-color: var(--bg-dark);
     color: var(--text-color);
+    line-height: 1.6;
     overflow-x: hidden;
 }
 
-/* Header */
+/* Navbar */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    background: rgba(13, 13, 18, 0.8);
+    background: var(--nav-bg);
     backdrop-filter: blur(10px);
     position: fixed;
     width: 100%;
+    top: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .logo {
     font-size: 1.5rem;
     font-weight: 800;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--primary);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -51,34 +49,30 @@ header {
 
 .nav-links {
     display: flex;
-    gap: 30px;
     list-style: none;
+    gap: 30px;
 }
 
 .nav-links a {
-    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
-    font-weight: 600;
+    color: var(--text-color);
+    font-weight: 500;
     transition: color 0.3s;
+    font-size: 0.95rem;
 }
 
 .nav-links a:hover {
-    color: var(--text-color);
+    color: var(--primary);
 }
 
 .play-btn-small {
     background: var(--primary);
     color: white;
     padding: 10px 20px;
-    border-radius: 30px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.play-btn-small:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px var(--primary);
+    transition: transform 0.3s, background 0.3s;
 }
 
 /* Hero Section */
@@ -89,67 +83,67 @@ header {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: radial-gradient(circle at center, rgba(108, 92, 231, 0.1) 0%, transparent 70%);
+    padding: 0 20px;
+    background: radial-gradient(circle at center, #1e1e2d 0%, #0f0f13 100%);
 }
 
 .hero h1 {
-    font-size: 5rem;
-    line-height: 1.1;
+    font-size: 4rem;
+    font-weight: 900;
     margin-bottom: 20px;
+    line-height: 1.1;
 }
 
-.hero span {
-    background: linear-gradient(90deg, var(--accent), var(--primary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+.hero h1 span {
+    color: var(--primary);
 }
 
 .hero p {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.7);
     max-width: 600px;
     margin-bottom: 40px;
 }
 
 .cta-btn {
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    background: var(--primary);
     color: white;
-    padding: 15px 40px;
-    font-size: 1.2rem;
-    border-radius: 50px;
-    text-decoration: none;
+    padding: 18px 40px;
+    border-radius: 12px;
+    font-size: 1.1rem;
     font-weight: 700;
-    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
-    transition: all 0.3s ease;
-    display: inline-flex;
+    text-decoration: none;
+    display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .cta-btn:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(108, 92, 231, 0.6);
+    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
 }
 
-/* Games Grid */
-.games-section {
+/* Sections Foundation */
+.games-section, .mission-section, .doc-section, .roadmap-section {
     padding: 100px 50px;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-.section-title {
+.section-title, .section-header {
     font-size: 2.5rem;
+    font-weight: 800;
     margin-bottom: 50px;
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
+/* Games Grid */
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 30px;
 }
 
@@ -157,42 +151,39 @@ header {
     background: var(--card-bg);
     border-radius: 20px;
     overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s, border-color 0.3s;
 }
 
 .game-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary);
 }
 
 .card-image {
-    width: 100%;
-    height: 200px;
-    background: #2a2a35;
+    height: 180px;
+    background: #121218;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     position: relative;
-}
-
-.card-img-placeholder {
-    font-size: 3rem;
-    opacity: 0.5;
 }
 
 .ocde-tag {
     position: absolute;
     top: 15px;
-    right: 15px;
+    left: 15px;
     background: rgba(0, 0, 0, 0.7);
-    padding: 5px 10px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.card-img-placeholder {
+    font-size: 3.5rem;
+    opacity: 0.8;
 }
 
 .card-content {
@@ -200,37 +191,111 @@ header {
 }
 
 .game-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 10px;
 }
 
-.game-desc {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.5;
+.play-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Documentation */
+.doc-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.doc-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    width: 320px;
+    height: 480px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow-y: auto;
+}
+
+.doc-card h3 {
+    color: var(--accent);
     margin-bottom: 20px;
 }
 
-.play-link {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: gap 0.2s;
+.lvl-tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
 }
 
-.play-link:hover {
-    gap: 10px;
+.easy { background: #00b894; }
+.normal { background: #fdcb6e; color: #333; }
+.hard { background: #d63031; }
+
+/* Trello / Roadmap */
+.trello-board {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.trello-column {
+    background: #16161c;
+    width: 320px;
+    height: 480px;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px 15px;
+}
+
+.column-title { font-weight: 700; }
+
+.column-count {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+.trello-cards {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.trello-card {
+    background: #25252e;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.status-icon.success { color: #00b894; }
+
+.project-tag {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
 }
 
 /* Footer */
 footer {
-    padding: 50px;
+    padding: 60px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.9rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
-    margin-top: 100px;
+    color: rgba(255, 255, 255, 0.3);
 }
